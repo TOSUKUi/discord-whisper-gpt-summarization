@@ -1,0 +1,12 @@
+version: '4'
+
+services:
+  bot:
+    build:
+      dockerfile: Dockerfile.development
+    environment:
+      - DISCORD_BOT_TOKEN=<TOKEN>
+      - OPENAI_API_KEY=<TOKEN>
+    volumes:
+      - ./:/app
+    entrypoint: bash entrypoint.sh
