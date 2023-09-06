@@ -5,4 +5,5 @@ services:
     build: .
     environment:
       - DISCORD_BOT_TOKEN=<TOKEN>
+      - OPENAI_API_KEY=<TOKEN>
 
