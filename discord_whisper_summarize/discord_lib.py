@@ -11,7 +11,8 @@ from . import open_ai_lib
 
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix=">", intents=intents)
+bot = commands.Bot(command_prefix="/", intents=intents)
+
 
 @bot.event
 async def on_ready():
@@ -55,7 +56,8 @@ async def finished_callback(sink: MP3Sink, channel: discord.TextChannel):
             message = await channel.send("文字起こし中")
             meeting_minutes = summarizer.meeting_minutes(transcription)
             await message.edit(content="文字起こし完了。議事録作成中")
-            await channel.send(content=f"""
+            await channel.send(
+                content=f"""
 議事録 参加者: {', '.join(mention_strs)}
 ------
 全体の概要
@@ -96,9 +98,7 @@ async def start(ctx: discord.ApplicationContext):
     vc: discord.VoiceClient = ctx.voice_client
 
     if not vc:
-        return await ctx.send(
-            "I'm not in a vc right now. Use `/join` to make me join!"
-        )
+        return await ctx.send("I'm not in a vc right now. Use `/join` to make me join!")
 
     vc.start_recording(
         MP3Sink(),
@@ -118,6 +118,7 @@ async def stop(ctx: discord.ApplicationContext):
         return await ctx.send("There's no recording going on right now")
 
     vc.stop_recording()
+    vc.disconnect()
 
     await ctx.send("The recording has stopped!")
 
